@@ -14,11 +14,12 @@ namespace Lab3_Threading_Obrazy
     {
         private Matrix matrixA;
         private Matrix matrixB;
+        private Matrix resultMatrix;
+        int size;
         public MatrixForm()
         {
             InitializeComponent();
         }
-
         private void num_MatrixB_cols_ValueChanged(object sender, EventArgs e)
         {
 
@@ -39,8 +40,12 @@ namespace Lab3_Threading_Obrazy
             }
             else
             {
-                matrixA = new Matrix(rows_A, cols_A, limit);
-                matrixB = new Matrix(rows_B, cols_B, limit);
+                matrixA = new Matrix(rows_A, cols_A);
+                matrixB = new Matrix(rows_B, cols_B);
+                resultMatrix = new Matrix(rows_A, cols_B);
+
+                matrixA.fillMatrix(limit);
+                matrixB.fillMatrix(limit);
 
                 string matrixes = matrixA.ToString();
                 matrixes += Environment.NewLine + matrixB.ToString();
@@ -48,26 +53,56 @@ namespace Lab3_Threading_Obrazy
             }
         }
 
-        private void btn_rndMatrix_Click(object sender, EventArgs e)
+        private static void Multiply(int i, int resCols, int Arows, int[,] matrixA, int[,] matrixB, int[,] resultMatrix)
         {
+            for (int j = 0; j < resCols; ++j) //koluny wynikowej
+            {
+                for (int k = 0; k < Arows; ++k) //liczba wierszy A
+                {
+                    resultMatrix[i, j] += matrixA[i, k] * matrixB[k, j];
+                }
+            }
+        }
+
+        private void btn_Multiply_Click(object sender, EventArgs e)
+        {
+            int[,] matA = matrixA.getValue();
+            int[,] matB = matrixB.getValue();
+            int[,] matRes = resultMatrix.getValue();
+            int resRows = int.Parse(num_matrixA_rows.Value.ToString());
+            int resCols = int.Parse(num_MatrixB_cols.Value.ToString());
+            int Arows = resRows;
+
+            for (int i = 0; i < resRows; ++i) //wiersze wynik i =start size = end
+            {
+                Multiply(i, resCols, Arows, matA, matB, matRes);
+            }
+
+            txtBox_logScreen.Clear();
+            txtBox_logScreen.Text = resultMatrix.ToString();
+        }
+
+        private void btn_multiplyParalell_Click(object sender, EventArgs e)
+        {
+            int[,] matA = matrixA.getValue();
+            int[,] matB = matrixB.getValue();
+            int[,] matRes = resultMatrix.getValue();
+            int resRows = int.Parse(num_matrixA_rows.Value.ToString());
+            int resCols = int.Parse(num_MatrixB_cols.Value.ToString());
+            int Arows = resRows;
+
+            int maxThreads = 6;
+            ParallelOptions opt = new ParallelOptions() { MaxDegreeOfParallelism = maxThreads };
+            int[] threadUsed = new int[Environment.ProcessorCount];
             Random rnd = new Random();
-            int limit = int.Parse(num_MatrixMaxValue.Value.ToString()) +1;
-            int rows_A = rnd.Next(limit);
-            int cols_A = rnd.Next(limit);
-            int rows_B = cols_A;
-            int cols_B = rnd.Next(limit);
 
-            matrixA = new Matrix(rows_A, cols_A, limit);
-            matrixB = new Matrix(rows_B, cols_B, limit);
+            Parallel.For(0, resRows, opt, x =>
+            {
+                Multiply(x, resCols, Arows, matA, matB, matRes);
+            });
 
-            num_MatrixA_cols.Value = cols_A;
-            num_matrixA_rows.Value = rows_A;
-            num_MatrixB_cols.Value = cols_B;
-            num_MatrixB_rows.Value = rows_B;
-
-            string matrixes = matrixA.ToString();
-            matrixes += Environment.NewLine + matrixB.ToString();
-            txtBox_logScreen.Text = matrixes;
+            txtBox_logScreen.Clear();
+            txtBox_logScreen.Text = resultMatrix.ToString();
         }
     }
 }

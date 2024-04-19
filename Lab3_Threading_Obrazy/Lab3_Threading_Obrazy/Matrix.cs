@@ -10,22 +10,35 @@ namespace Lab3_Threading_Obrazy
     {
         private int rows; //number of rows
         private int cols; //number of cols
-        private int[,] matrix_values;
+        private volatile int[,] matrix_values;
 
-        public Matrix(int n, int m, int limit)
+        public Matrix(int n, int m)
         {
             rows = n;
             cols = m;
             matrix_values = new int[rows, cols];
+        }
 
+        public int[,] getValue()
+        {
+            return matrix_values;
+        }
+
+        public void setValue(int[,] value) 
+        {
+            matrix_values = value;
+        }
+
+        public void fillMatrix(int limit)
+        {
             Random rnd = new Random();
 
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    int tmp = rnd.Next(limit+1);
-                    matrix_values[i,j] = tmp;
+                    int tmp = rnd.Next(limit + 1);
+                    matrix_values[i, j] = tmp;
                 }
             }
         }

@@ -41,8 +41,9 @@
             num_MatrixMaxValue = new NumericUpDown();
             lbl_MatrixMaxValue = new Label();
             btn_saveEnteredMatrix = new Button();
-            btn_rndMatrix = new Button();
             txtBox_logScreen = new TextBox();
+            btn_MultiplyThread = new Button();
+            btn_multiplyParalell = new Button();
             ((System.ComponentModel.ISupportInitialize)num_matrixA_rows).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_MatrixA_cols).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_MatrixB_cols).BeginInit();
@@ -180,17 +181,6 @@
             btn_saveEnteredMatrix.UseVisualStyleBackColor = true;
             btn_saveEnteredMatrix.Click += btn_saveEnteredMatrix_Click;
             // 
-            // btn_rndMatrix
-            // 
-            btn_rndMatrix.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 238);
-            btn_rndMatrix.Location = new Point(164, 267);
-            btn_rndMatrix.Name = "btn_rndMatrix";
-            btn_rndMatrix.Size = new Size(126, 63);
-            btn_rndMatrix.TabIndex = 13;
-            btn_rndMatrix.Text = "Losuj macierze";
-            btn_rndMatrix.UseVisualStyleBackColor = true;
-            btn_rndMatrix.Click += btn_rndMatrix_Click;
-            // 
             // txtBox_logScreen
             // 
             txtBox_logScreen.Location = new Point(417, 68);
@@ -201,13 +191,36 @@
             txtBox_logScreen.Size = new Size(280, 262);
             txtBox_logScreen.TabIndex = 14;
             // 
+            // btn_MultiplyThread
+            // 
+            btn_MultiplyThread.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            btn_MultiplyThread.Location = new Point(417, 355);
+            btn_MultiplyThread.Name = "btn_MultiplyThread";
+            btn_MultiplyThread.Size = new Size(123, 51);
+            btn_MultiplyThread.TabIndex = 15;
+            btn_MultiplyThread.Text = "Thread";
+            btn_MultiplyThread.UseVisualStyleBackColor = true;
+            btn_MultiplyThread.Click += btn_Multiply_Click;
+            // 
+            // btn_multiplyParalell
+            // 
+            btn_multiplyParalell.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            btn_multiplyParalell.Location = new Point(574, 355);
+            btn_multiplyParalell.Name = "btn_multiplyParalell";
+            btn_multiplyParalell.Size = new Size(123, 51);
+            btn_multiplyParalell.TabIndex = 16;
+            btn_multiplyParalell.Text = "Paralell";
+            btn_multiplyParalell.UseVisualStyleBackColor = true;
+            btn_multiplyParalell.Click += btn_multiplyParalell_Click;
+            // 
             // MatrixForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(725, 450);
+            Controls.Add(btn_multiplyParalell);
+            Controls.Add(btn_MultiplyThread);
             Controls.Add(txtBox_logScreen);
-            Controls.Add(btn_rndMatrix);
             Controls.Add(btn_saveEnteredMatrix);
             Controls.Add(num_MatrixMaxValue);
             Controls.Add(lbl_MatrixMaxValue);
@@ -247,7 +260,8 @@
         private NumericUpDown num_MatrixMaxValue;
         private Label lbl_MatrixMaxValue;
         private Button btn_saveEnteredMatrix;
-        private Button btn_rndMatrix;
         private TextBox txtBox_logScreen;
+        private Button btn_MultiplyThread;
+        private Button btn_multiplyParalell;
     }
 }
