@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,9 +49,10 @@ namespace Lab3_Threading_Obrazy
                 matrixA.fillMatrix(limit, seed);
                 matrixB.fillMatrix(limit, seed);
 
-                //string matrixes = matrixA.ToString();
-                //matrixes += Environment.NewLine + matrixB.ToString();
-                txtBox_logScreen.Text = "Wygenerowano Macierze.";
+                string matrixes = matrixA.ToString();
+                matrixes += Environment.NewLine + matrixB.ToString();
+                //txtBox_logScreen.Text = "Wygenerowano Macierze.";
+                txtBox_logScreen.Text = matrixes;
 
                 btn_MultiplyThread.Visible = true;
                 btn_multiplyParalell.Visible = true;
@@ -68,6 +70,32 @@ namespace Lab3_Threading_Obrazy
             }
         }
 
+        private static void MultiplyThread(int n, int threadCount, int resCols, int Arows, int[,] matrixA, int[,] matrixB, int[,] resultMatrix)
+        {
+            double value = (double)Arows / threadCount;
+            int ww = (int)Math.Ceiling(value);
+            //int start = (n-1) * ww;
+            int start = n * ww;
+            int stop = start + ww;
+
+            if(stop > Arows)
+            {
+                stop = Arows;
+            }
+
+            for (int i = start; i < stop; ++i) //wiersze wynik i =start size = end
+            {
+
+                for (int j = 0; j < resCols; ++j) //koluny wynikowej
+                {
+                    for (int k = 0; k < Arows; ++k) //liczba wierszy A
+                    {
+                        resultMatrix[i, j] += matrixA[i, k] * matrixB[k, j];
+                    }
+                }
+            }
+        }
+
         private void btn_Multiply_Click(object sender, EventArgs e)
         {
             int[,] matA = matrixA.getValue();
@@ -76,17 +104,28 @@ namespace Lab3_Threading_Obrazy
             int resRows = int.Parse(num_matrixA_rows.Value.ToString());
             int resCols = int.Parse(num_MatrixB_cols.Value.ToString());
             int Arows = resRows;
+            int threadCount = int.Parse(num_threadCount.Value.ToString());
 
+            Thread[] threads = new Thread[threadCount];
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            for (int i = 0; i < resRows; ++i) //wiersze wynik i =start size = end
+            for (int i = 0; i < threadCount; i++)
             {
-                Multiply(i, resCols, Arows, matA, matB, matRes);
+                //threads[i] = new Thread(MultiplyThread);
+                //threads[i].Start(i,threadCount, resCols, Arows, matA, matB, matRes);
+                threads[i] = new Thread(x=> MultiplyThread(i, threadCount, resCols, Arows, matA, matB, matRes));
+                threads[i].Start();
+                Thread.Sleep(50);
             }
+            for(int i = 0;i < threadCount; i++)
+            {
+                threads[i].Join();
+            }
+            //MultiplyThread(start, stop, resCols, Arows, matA, matB, matRes);
             watch.Stop();
 
             txtBox_logScreen.Clear();
-            //txtBox_logScreen.Text = resultMatrix.ToString();
-            txtBox_logScreen.Text = "Policzono poprawnie";
+            txtBox_logScreen.Text = resultMatrix.ToString();
+            //txtBox_logScreen.Text = "Policzono poprawnie";
             txtBox_time.Text = watch.ElapsedMilliseconds.ToString();
             watch.Reset();
         }

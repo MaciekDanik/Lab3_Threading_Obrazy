@@ -1,0 +1,5 @@
+100x100
+10 watkow
+100/10 = 10 wierszy na watek
+start = n * w/w = 0
+end = n *w/w + w/w
