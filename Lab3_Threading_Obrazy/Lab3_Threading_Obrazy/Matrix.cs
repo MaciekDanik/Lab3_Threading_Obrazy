@@ -29,9 +29,9 @@ namespace Lab3_Threading_Obrazy
             matrix_values = value;
         }
 
-        public void fillMatrix(int limit)
+        public void fillMatrix(int limit, int seed)
         {
-            Random rnd = new Random();
+            Random rnd = new Random(seed);
 
             for (int i = 0; i < rows; i++)
             {
