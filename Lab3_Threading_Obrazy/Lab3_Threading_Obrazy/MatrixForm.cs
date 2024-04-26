@@ -49,10 +49,11 @@ namespace Lab3_Threading_Obrazy
                 matrixA.fillMatrix(limit, seed);
                 matrixB.fillMatrix(limit, seed);
 
-                string matrixes = matrixA.ToString();
-                matrixes += Environment.NewLine + matrixB.ToString();
-                //txtBox_logScreen.Text = "Wygenerowano Macierze.";
-                txtBox_logScreen.Text = matrixes;
+                //string matrixes = matrixA.ToString();
+                //matrixes += Environment.NewLine + matrixB.ToString();
+                //txtBox_logScreen.Text = matrixes;
+                txtBox_logScreen.Text = "Wygenerowano Macierze.";
+
 
                 btn_MultiplyThread.Visible = true;
                 btn_multiplyParalell.Visible = true;
@@ -114,7 +115,7 @@ namespace Lab3_Threading_Obrazy
                 //threads[i].Start(i,threadCount, resCols, Arows, matA, matB, matRes);
                 threads[i] = new Thread(x=> MultiplyThread(i, threadCount, resCols, Arows, matA, matB, matRes));
                 threads[i].Start();
-                Thread.Sleep(50);
+                Thread.Sleep(5);
             }
             for(int i = 0;i < threadCount; i++)
             {
@@ -124,8 +125,11 @@ namespace Lab3_Threading_Obrazy
             watch.Stop();
 
             txtBox_logScreen.Clear();
-            txtBox_logScreen.Text = resultMatrix.ToString();
-            //txtBox_logScreen.Text = "Policzono poprawnie";
+            //txtBox_logScreen.Text = resultMatrix.ToString();
+            txtBox_logScreen.Text = "Policzono poprawnie";
+            int time = int.Parse(watch.ElapsedMilliseconds.ToString());
+            time = time - threadCount * 50;
+            //txtBox_time.Text = time.ToString();
             txtBox_time.Text = watch.ElapsedMilliseconds.ToString();
             watch.Reset();
         }

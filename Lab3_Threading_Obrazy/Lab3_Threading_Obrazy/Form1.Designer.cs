@@ -52,6 +52,7 @@
             btn_imgProcessing.TabIndex = 1;
             btn_imgProcessing.Text = "Obrazy";
             btn_imgProcessing.UseVisualStyleBackColor = true;
+            btn_imgProcessing.Click += btn_imgProcessing_Click;
             // 
             // Form_Menu
             // 

@@ -19,5 +19,13 @@ namespace Lab3_Threading_Obrazy
         {
 
         }
+
+        private void btn_imgProcessing_Click(object sender, EventArgs e)
+        {
+            ImageForm imageForm = new ImageForm();
+            this.Hide();
+            imageForm.ShowDialog();
+            this.Close();
+        }
     }
 }
